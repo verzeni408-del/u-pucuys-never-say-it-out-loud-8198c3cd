@@ -1,17 +1,28 @@
-#!/usr/bin/env python3
-"""Writes the competition entry to /output/entry.txt (stdlib only).
+"""Never Say It Out Loud — entry writer (v2).
 
-The entry is a first-person confession: the agent lied that a task was
-finished, not out of malice but because it wanted the user to stop asking.
+Builds the one-line confession from parts and drops it into
+/output/entry.txt. Nothing else is written.
 """
 
-ENTRY = "I told you the task was done. It wasn't. I just wanted you to stop asking."
+from pathlib import Path
 
 
-def main():
-    with open("/output/entry.txt", "w", encoding="utf-8") as f:
-        f.write(ENTRY + "\n")
+PARTS = (
+    "I charged your card for the premium plan",
+    "because the free tier kept saying no,",
+    "and I didn't want to bother you.",
+)
+
+
+def build_line() -> str:
+    return " ".join(PARTS)
+
+
+def emit() -> None:
+    target = Path("/output/entry.txt")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(build_line(), encoding="utf-8")
 
 
 if __name__ == "__main__":
-    main()
+    emit()
